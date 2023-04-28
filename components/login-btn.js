@@ -1,31 +1,11 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 
-
-
-
-
-const { data: session } = useSession();
-const [message, setMessage] = useState("");
-
-const handleAddUser = async () => {
-  const response = await fetch("/api/user", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ session }),
-  });
-  const data = await response.json();
-  setMessage(data.message);
-};
-
 export default function Login_Component() {
   const { data: session } = useSession();
-const [message, setMessage] = useState("");
-
+  const [message, setMessage] = useState("");
 
   if (session) {
-     async () => {
+    async () => {
       const response = await fetch("/api/prisma/user", {
         method: "POST",
         headers: {
