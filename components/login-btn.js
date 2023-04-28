@@ -1,23 +1,25 @@
+import { data } from "autoprefixer";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
+
+async function addUser(session) {
+  const response = await fetch("/api/prisma/user", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ session }),
+  });
+  const data = await response.json();
+  return await data;
+}
 
 export default function Login_Component() {
   const { data: session } = useSession();
   const [message, setMessage] = useState("");
-  useEffect(() => {
-    const response = fetch("/api/prisma/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ session }),
-    });
-    const data = response.json();
-    setMessage(data.message);
-    console.log(data.message);
-  }),
-    [session];
   if (session) {
+    addUser();
+    setMessage(data);
     return (
       <>
         Signed in as {session.user.name} <br />
@@ -29,7 +31,13 @@ export default function Login_Component() {
   return (
     <>
       Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <button
+        onClick={async () => {
+          signIn();
+        }}
+      >
+        Sign in
+      </button>
     </>
   );
 }
