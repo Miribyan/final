@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id         Int        @id @default(autoincrement())
+  name       String     @db.VarChar(100)
+  created_at DateTime   @default(now())
+  is_admin   Boolean    @default(false)
+}
+
+model films {
+  id         Int       @id @default(autoincrement())
+  category   String    @db.VarChar(100)
+  year       DateTime
+  title      String    @db.VarChar(100)
+  director   String    @db.VarChar(100)
+  created_at DateTime  @default(now())
+}
+
+model ratings {
+  id         Int      @id @default(autoincrement())
+  users_id   Int
+  film_id    Int
+  stars      Int
+  created_at DateTime @default(now())
+
+  users users @relation(fields: [users_id], references: [id])
+  films films @relation(fields: [film_id], references: [id])
+
+  @@index([users_id], name: "users_id")
+  @@index([film_id], name: "film_id")
+}
+
+model reviews {
+  id          Int      @id @default(autoincrement())
+  review_name String   @db.VarChar(100)
+  films_id    Int
+  users_id    Int
+  image_url   String   @db.VarChar(100)
+  content     String   @db.VarChar(2000)
+  stars       Int
+  created_at  DateTime @default(now())
+
+  films    films      @relation(fields: [films_id], references: [id])
+  authors  users      @relation(fields: [users_id], references: [id])
+  tags     tags[]     @relation("review_tags")
+  likes    likes[]
+  comments comments[]
+
+  @@index([films_id], name: "reviews_films_id")
+  @@index([users_id], name: "reviews_users_id")
+}
+
+model tags {
+  id         Int      @id @default(autoincrement())
+  title      String   @db.VarChar(100)
+  created_at DateTime @default(now())
+
+  reviews reviews[] @relation("review_tags", references: [id])
+}
+
+model likes {
+  id         Int      @id @default(autoincrement())
+  reviews_id Int
+  users_id   Int
+  created_at DateTime @default(now())
+
+  reviews reviews @relation(fields: [reviews_id], references: [id])
+  users   users   @relation(fields: [users_id], references: [id])
+
+  @@index([reviews_id], name: "likes_reviews_id")
+  @@index([users_id], name: "likes_users_id")
+}
+
+model comments {
+  id         Int      @id @default(autoincrement())
+  content    String   @db.VarChar(200)
+  users_id   Int
+  reviews_id Int
+  created_at DateTime @default(now())
+
+  users   users   @relation(fields: [users_id], references: [id])
+  reviews reviews @relation(fields: [reviews_id], references: [id])
+
+  @@index([users_id], name: "comments_users_id")
+  @@index([reviews_id], name: "comments_reviews_id")
+}

@@ -1,0 +1,51 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id         Int      @id @default(autoincrement())
+    name       String
+    created_at DateTime @default(now())
+    isAdmin    Boolean  @default(false)
+    reviews    Review[]
+}
+
+model Film {
+    id        Int      @id @default(autoincrement())
+    category  String
+    year      Int
+    title     String
+    director  String
+    createdAt DateTime @default(now())
+    reviews   Review[]
+}
+
+model Review {
+    id          Int      @id @default(autoincrement())
+    reviewName String
+    filmId      Int
+    authorId    Int
+    imageUrl    String
+    content     String   @db.Text
+    stars       Int
+    createdAt   DateTime @default(now())
+
+    author User @relation(fields: [authorId], references: [id])
+    film   Film @relation(fields: [filmId], references: [id])
+
+    @@index([filmId], name: "review_film_id")
+    @@index([authorId], name: "review_author_id")
+}
+
+model Rating {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    filmId    Int
+    stars     Int
+    createdAt DateTime @default(now())
+}
