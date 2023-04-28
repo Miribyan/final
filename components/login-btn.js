@@ -1,25 +1,41 @@
 import { useSession, signIn, signOut } from "next-auth/react";
-import { PrismaClient } from "@prisma/client";
-import { useEffect } from "react";
 
-const prisma = new PrismaClient();
+
+
+
+
 const { data: session } = useSession();
+const [message, setMessage] = useState("");
 
-useEffect(() => {
-  async function addUser() {
-    if (session) {
-      await prisma.user.create({
-        data: {
-          name: session.user.name,
-        },
-      });
-    }
-  }
-  addUser();
-}, [session]);
+const handleAddUser = async () => {
+  const response = await fetch("/api/user", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ session }),
+  });
+  const data = await response.json();
+  setMessage(data.message);
+};
 
 export default function Login_Component() {
+  const { data: session } = useSession();
+const [message, setMessage] = useState("");
+
+
   if (session) {
+     async () => {
+      const response = await fetch("/api/prisma/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ session }),
+      });
+      const data = await response.json();
+      setMessage(data.message);
+    };
     return (
       <>
         Signed in as {session.user.name} <br />
