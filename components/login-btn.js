@@ -4,15 +4,15 @@ import { useEffect, useState } from "react";
 export default function Login_Component() {
   const { data: session } = useSession();
   const [message, setMessage] = useState("");
-  useEffect(async () => {
-    const response = await fetch("/api/prisma/user", {
+  useEffect(() => {
+    const response = fetch("/api/prisma/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ session }),
     });
-    const data = await response.json();
+    const data = response.json();
     setMessage(data.message);
     console.log(data.message);
   }),
