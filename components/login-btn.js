@@ -3,23 +3,22 @@ import { PrismaClient } from "@prisma/client";
 import { useEffect } from "react";
 
 const prisma = new PrismaClient();
+const { data: session } = useSession();
+
+useEffect(() => {
+  async function addUser() {
+    if (session) {
+      await prisma.user.create({
+        data: {
+          name: session.user.name,
+        },
+      });
+    }
+  }
+  addUser();
+}, [session]);
 
 export default function Login_Component() {
-  const { data: session } = useSession();
-
-  useEffect(() => {
-    async function addUser() {
-      if (session) {
-        await prisma.user.create({
-          data: {
-            name: session.user.name,
-          },
-        });
-      }
-    }
-    addUser();
-  }, [session]);
-
   if (session) {
     return (
       <>
