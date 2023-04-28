@@ -4,17 +4,21 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function addUser(session) {
-  await prisma.user.create({
-    data: {
-      name: session.user.name,
-    },
-  });
+  try {
+    await prisma.user.create({
+      data: {
+        name: session.user.name,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-export default function Login_Component() {
+export default async function Login_Component() {
   const { data: session } = useSession();
   if (session) {
-    addUser(session);
+    await addUser(session); // добавлено ключевое слово await
     return (
       <>
         Signed in as {session.user.name} <br />
