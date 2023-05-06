@@ -18,41 +18,77 @@ model User {
     created_at    DateTime  @default(now())
     isAdmin       Boolean   @default(false)
     reviews       Review[]
-}
-
-model Film {
-    id        Int      @id @default(autoincrement())
-    category  String
-    year      Int
-    title     String
-    director  String
-    createdAt DateTime @default(now())
-    reviews   Review[]
+    Rating        Rating[]
+    Like          Like[]
+    Comment       Comment[]
 }
 
 model Review {
     id         Int      @id @default(autoincrement())
     reviewName String
-    filmId     Int
+    category   String
     authorId   String
     imageUrl   String
     content    String   @db.Text
     stars      Int
     createdAt  DateTime @default(now())
 
-    author User @relation(fields: [authorId], references: [id])
-    film   Film @relation(fields: [filmId], references: [id])
+    author   User       @relation(fields: [authorId], references: [id])
+    Taggings Taggings[]
+    Like     Like[]
+    Comment  Comment[]
+    Rating   Rating[]
 
-    @@index([filmId], name: "review_film_id")
     @@index([authorId], name: "review_author_id")
 }
 
 model Rating {
     id        Int      @id @default(autoincrement())
-    userId    Int
-    filmId    Int
+    userId    String
+    reviewId  Int
     stars     Int
     createdAt DateTime @default(now())
+
+    user   User   @relation(fields: [userId], references: [id])
+    review Review @relation(fields: [reviewId], references: [id])
+}
+
+model Tag {
+    id        Int        @id @default(autoincrement())
+    title     String
+    createdAt DateTime   @default(now())
+    Taggings  Taggings[]
+}
+
+model Taggings {
+    id        Int      @id @default(autoincrement())
+    tagId     Int
+    reviewId  Int
+    createdAt DateTime @default(now())
+
+    tag    Tag    @relation(fields: [tagId], references: [id])
+    review Review @relation(fields: [reviewId], references: [id])
+}
+
+model Like {
+    id        Int      @id @default(autoincrement())
+    reviewId  Int
+    userId    String
+    createdAt DateTime @default(now())
+
+    review Review @relation(fields: [reviewId], references: [id])
+    user   User   @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+    id        Int      @id @default(autoincrement())
+    reviewId  Int
+    userId    String
+    content   String
+    createdAt DateTime @default(now())
+
+    review Review @relation(fields: [reviewId], references: [id])
+    user   User   @relation(fields: [userId], references: [id])
 }
 
 model Account {

@@ -1,19 +1,20 @@
 import { useSession, signIn, signOut } from "next-auth/react";
+import { useTranslation } from "next-i18next";
 
 export default function Login_Component() {
+  const { t } = useTranslation();
   const { data: session } = useSession();
   if (session) {
     return (
       <>
-        Signed in as {session.user.name} <br />
-        <button onClick={() => signOut()}>Sign out</button>
+        <button onClick={() => signOut()}>  {t("common:logout")}</button>
       </>
     );
   }
   return (
     <>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      
+      <button onClick={() => signIn()}>{t("common:login")}</button>
     </>
   );
 }

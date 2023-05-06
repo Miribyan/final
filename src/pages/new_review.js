@@ -4,7 +4,9 @@ import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import AddFilmModalFormComponent from "../../components/addFilm";
+import AddFilmModalFormComponent from "../components/addFilm";
+import ReactMarkdown from "react-markdown";
+import { useTranslation } from "next-i18next";
 
 export default function NewReview() {
   const [mainTitle, setMainTitle] = useState("");
@@ -13,18 +15,12 @@ export default function NewReview() {
   const [rating, setRating] = useState(0);
   const [filesUrls, setFilesUrls] = useState([]);
   const [previewFiles, setPreviewFile] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [group, setGroup] = useState("");
+  // const [open, setOpen] = useState(false);
   const ref = useRef([]);
 
-  const tagCloud = [
-    { title: "The Shashlik Redemption", year: 1994 },
-    { title: "The Godfather", year: 1972 },
-    { title: "The Godfather: Part II", year: 1974 },
-    { title: "The Dark Knight", year: 2008 },
-    { title: "12 Angry Men", year: 1957 },
-    { title: "Schindler's List", year: 1993 },
-    { title: "Pulp Fiction", year: 1994 },
-  ];
+  const { t } = useTranslation();
+  const [tagCloud, setTagCloud] = useState([]);
 
   const updatePreviewFiles = useCallback(
     (files) => {
@@ -78,19 +74,15 @@ export default function NewReview() {
     [updatePreviewFiles, uploadFiles]
   );
 
-  const {
-    fileRejections, // Error files
-    getRootProps,
-    getInputProps,
-    isDragActive,
-  } = useDropzone({
-    onDrop,
-    // accept: "image/jpeg,image/png",
-    accept: {
-      "image/jpeg": [".jpeg", ".png"],
-    },
-    maxFiles: 3,
-  });
+  const { fileRejections, getRootProps, getInputProps, isDragActive } =
+    useDropzone({
+      onDrop,
+
+      accept: {
+        "image/jpeg": [".jpeg", ".png"],
+      },
+      maxFiles: 3,
+    });
 
   const removeImage = (i) => {
     setPreviewFile(previewFiles.filter((x) => x.name !== i));
@@ -108,16 +100,23 @@ export default function NewReview() {
 
   return (
     <>
-      <AddFilmModalFormComponent isOpen={setOpen} isActive={open} />
-      <div className="mt-5 flex shadow-md justify-center h-full overflow-scroll">
-        <form className="w-3/5" onSubmit={handleSubmit}>
-          <div className="flex flex-col divide-y divide-gray-200 overflow-hidden rounded-lg bg-white shadow">
+      {/* <AddFilmModalFormComponent isOpen={setOpen} isActive={open} /> */}
+      <div className="border-gray-200 pb-5  shadow-md">
+        <h3 className="mx-10 text-xl font-semibold leading-6 text-gray-900">
+          {" "}
+          {t("postCreate:pageName")}
+        </h3>
+      </div>
+
+      <div className=" flex  justify-center overflow-scroll pb-2">
+        <form className="w-3/5 shadow-md" onSubmit={handleSubmit}>
+          <div className="flex flex-col divide-y divide-gray-200 border-b-1 shadow-md overflow-hidden rounded-lg rounded-t-sm bg-white ">
             <div className="flex flex-col px-4 py-3 sm:py-4">
               <label
                 htmlFor="mainTitle"
                 className="mb-2 block text-sm font-medium leading-6 text-gray-900"
               >
-                Название рецензии:
+                {t("postCreate:reviewTitle")}
               </label>
               <input
                 id="mainTitle"
@@ -130,45 +129,40 @@ export default function NewReview() {
             </div>
             <div className="flex flex-col px-4 py-3 sm:py-4">
               <label
+                htmlFor="category"
+                className="mb-2 block text-sm font-medium leading-6 text-gray-900"
+              >
+                {t("postCreate:category")}
+              </label>
+              <select
+                name="category"
+                id="category"
+                onChange={(ev) => {
+                  setGroup(ev.target.value);
+                }}
+                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              >
+                <option value="Game">{t("postCreate:game")}</option>
+                <option value="Movie">{t("postCreate:movie")}</option>
+                <option value="Book">{t("postCreate:book")}</option>
+              </select>
+            </div>
+            <div className="flex flex-col px-4 py-3 sm:py-4">
+              <label
                 htmlFor="filmTitle"
                 className="mb-2 block text-sm font-medium leading-6 text-gray-900"
               >
-                Название фильма:
+                {t("postCreate:nameMovie")}
               </label>
-              <Autocomplete
-                freeSolo
-                c
-                className="block w-full mb-2 rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              <input
+                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 id="filmTitle"
                 value={filmTitle}
                 name="filmTitle"
-                disableClearable
-                options={tagCloud.map(
-                  (option) => option.title + ", " + option.year
-                )}
                 onChange={(event, newValue) => {
                   setFilmTitle(newValue);
                 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    InputProps={{
-                      ...params.InputProps,
-                      type: "search",
-                    }}
-                    size="small"
-                  />
-                )}
               />
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen(true);
-                }}
-                className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-              >
-                Add new film
-              </button>
             </div>
 
             <div className="flex flex-col px-4 py-3 sm:py-4">
@@ -177,7 +171,7 @@ export default function NewReview() {
                   htmlFor="cover-photo"
                   className="mb-2 block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Загрузите постер:
+                  {t("postCreate:addPoster")}
                 </label>
                 <div className=" flex  w-full h-full justify-center items-center bg-white px-2">
                   <div className="p-3 w-full h-full flex flex-col justify-center items-center rounded-md">
@@ -195,12 +189,11 @@ export default function NewReview() {
                       />
                       {isDragActive ? (
                         <p className=" h-full w-full bg-gray-50 text-md text-green-500 flex justify-center items-center top-0">
-                          Drop your media files here
+                          {t("postCreate:dropFiles")}
                         </p>
                       ) : (
                         <p className=" h-full w-full bg-gray-50  text-sm flex justify-center items-center top-0">
-                          Drag and drop some files here, or click to select
-                          files
+                          {t("postCreate:dnd")}
                         </p>
                       )}
                     </div>
@@ -241,40 +234,66 @@ export default function NewReview() {
               </div>
             </div>
 
-            <div className="min-h-32 flex flex-col items-center justify-center px-4 py-3 sm:py-4">
-              <label
-                className="mb-2 block text-sm font-medium leading-6 text-gray-900"
-                htmlFor="reviewText"
-              >
-                Текст рецензии:
-              </label>
-              <textarea
-                id="title"
-                type="text"
-                rows={5}
-                value={reviewText}
-                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                onChange={(event) => setReviewText(event.target.value)}
-              ></textarea>
-
+            <div className="flex w-full min-h-60 justify-center px-4 py-3 sm:py-4">
+              <div className="w-full">
+                <label
+                  className="mb-2 block text-sm font-medium leading-6 text-gray-900"
+                  htmlFor="reviewText"
+                >
+                  {t("postCreate:text")}
+                </label>
+                <div className="flex w-full">
+                  <textarea
+                    id="title"
+                    type="text"
+                    rows={10}
+                    value={reviewText}
+                    className="w-full resize-none block  rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    onChange={(event) => setReviewText(event.target.value)}
+                  ></textarea>{" "}
+                </div>
+                <div className="w-full ">
+                  <label
+                    className="my-2 block text-sm self-start font-medium leading-6 text-gray-900"
+                    htmlFor="reviewText"
+                  >
+                    {t("postCreate:preview")}
+                  </label>
+                  <div className=" pl-2 w-full h-64 border border-1 rounded-md shadow">
+                    <article className="prose-sm">
+                      <ReactMarkdown>{reviewText}</ReactMarkdown>
+                    </article>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex w-full justify-center px-4 py-3 sm:py-4">
               <Autocomplete
+                freeSolo
                 multiple
                 id="tags-outlined"
-                className="border-none hover:border-none rounded-md bg-transparent py-1.5 focus:ring-0 active:border-none sm:text-sm sm:leading-6  w-full"
+                className="border-none hover:border-none rounded-md bg-transparent py-1.5 focus:ring-0 active:border-none sm:text-sm sm:leading-6 w-full"
                 options={tagCloud}
-                getOptionLabel={(option) => option.title}
+                getOptionLabel={(option) => option}
                 filterSelectedOptions
+                onChange={(event, value) => {
+                  const newValue = value[value.length - 1];
+                  if (!tagCloud.includes(newValue)) {
+                    setTagCloud([...tagCloud, newValue]);
+                  }
+                }}
                 renderInput={(params) => (
                   <TextField {...params} placeholder="Добавьте #тег" />
                 )}
               />
             </div>
+
             <div className="flex flex-col px-4 py-1 sm:p-4">
               <label
                 htmlFor="rating"
                 className="mb-2 block text-sm font-medium leading-6 text-gray-900"
               >
-                Оценка:
+                {t("postCreate:rating")}
               </label>
               <div className="flex justify-center items-center">
                 <Rating
@@ -300,7 +319,7 @@ export default function NewReview() {
                 className="rounded-md bg-blue-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
                 type="submit"
               >
-                Опубликовать рецензию
+                {t("postCreate:publish")}
               </button>
             </div>
           </div>
@@ -308,4 +327,13 @@ export default function NewReview() {
       </div>
     </>
   );
+}
+
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "postCreate"])),
+    },
+  };
 }
