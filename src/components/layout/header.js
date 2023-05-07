@@ -65,9 +65,9 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 }));
 
 function Header() {
-  const router = useRouter()
+  const router = useRouter();
   const { t } = useTranslation();
-  const [currentLang, setCurrentLang] = useState(router.locale)
+  const [currentLang, setCurrentLang] = useState(router.locale);
   const changeLang = (lang) => {
     const currentPath = router.asPath;
     const newPath = currentPath.replace(`/${currentLang}`, `/${lang}`);
@@ -83,7 +83,6 @@ function Header() {
     changeLang(lang);
   };
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
 
   return (
     <>
@@ -92,13 +91,13 @@ function Header() {
           <div className="hidden md:flex md:justify-between md: items-center md:gap-x-12">
             <div className="flex w-1/4">
               <Link href="/" className=" text-md text-gray-900 px-3">
-              {t("common:main")}
+                {t("common:main")}
               </Link>
               <Link
                 href="/new_review"
                 className="text-md w-1/8 text-gray-900 px-3"
               >
-                 {t("common:myPage")}
+                {t("common:newReview")}
               </Link>
             </div>
             <input
@@ -152,12 +151,11 @@ function Header() {
                   className="-m-2.5 rounded-md p-2.5 text-gray-700"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  
                   <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
               </div>
               <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">  {t("common:yourCompany")}</span>
+                <span className="sr-only"> {t("common:yourCompany")}</span>
               </a>
               <div className="flex flex-1 justify-end">
                 <Link
@@ -202,13 +200,13 @@ function Header() {
                 href="/main"
                 className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
               >
-               {t("common:main")}
+                {t("common:main")}
               </Link>
               <Link
                 href="/myPage"
                 className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
               >
-               {t("common:myPage")}
+                {t("common:myPage")}
               </Link>
             </div>
           </Dialog.Panel>

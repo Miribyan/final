@@ -27,7 +27,7 @@ export default function NewReview(props) {
   const [tagCloud, setTagCloud] = useState([]);
   const [works, setWorks] = useState([]);
   const [imageUrl, setImageUrl] = useState("");
-  
+
   useEffect(() => {
     if (props.works) {
       setWorks([...props.works]);
@@ -148,7 +148,7 @@ export default function NewReview(props) {
       <AddWorkModalFormComponent isOpen={setOpen} isActive={open} />
       <div className="border-gray-200 pb-5  shadow-md">
         <h3 className="mx-10 text-xl font-semibold leading-6 text-gray-900">
-          {userId}
+          
           {t("postCreate:pageName")}
         </h3>
       </div>
