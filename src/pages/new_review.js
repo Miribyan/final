@@ -26,19 +26,21 @@ export default function NewReview(props) {
   const { t } = useTranslation();
   const [tagCloud, setTagCloud] = useState([]);
   const [works, setWorks] = useState([]);
-
   const [imageUrl, setImageUrl] = useState("");
+  
   useEffect(() => {
     if (props.works) {
       setWorks([...props.works]);
     }
   }, [props.works]);
+
   useEffect(() => {
     const result = works.find((e) => e.title === workTitle);
     if (result) {
       setWorkId(result.id);
     }
   }, [workTitle]);
+
   useEffect(() => {
     const result = filesUrls.join(", ");
     if (result) {
