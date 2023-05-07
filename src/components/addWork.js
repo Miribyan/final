@@ -1,22 +1,28 @@
 import { useState, useRef, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { useTranslation } from "next-i18next";
 
-export default function AddFilmModalFormComponent({ isOpen, isActive }) {
+export default function AddWorkModalFormComponent({ isOpen, isActive }) {
+  const { t } = useTranslation();
   const cancelButtonRef = useRef(null);
-  const [filmTitle, setFilmTitle] = useState("");
+  const [workTitle, setWorkTitle] = useState("");
   const [year, setYear] = useState("");
-  const [director, setDirector] = useState("");
-
+  const [author, setAuthor] = useState("");
+  const [category, setCategory] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const data = { filmTitle, year, director };
-      const response = await fetch("api/prisma/film", {
+      const data = { workTitle, year, author, category };
+      const response = await fetch("api/prisma/work", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
       await isOpen(false);
+      setCategory("");
+      setWorkTitle("");
+      setAuthor("");
+      setYear("");
     } catch (error) {
       console.log(error);
     }
@@ -59,24 +65,44 @@ export default function AddFilmModalFormComponent({ isOpen, isActive }) {
                       as="h3"
                       className="text-base font-semibold leading-6 text-gray-900"
                     >
-                      Добавить в коллекцию
+                      {t("addWork:pageTitle")}
                     </Dialog.Title>
                     <form onSubmit={handleSubmit}>
                       <div className="flex flex-col px-4 py-3 sm:py-4">
                         <label
-                          htmlFor="filmTitle"
+                          htmlFor="category"
                           className="mb-2 block text-sm text-start font-medium leading-6 text-gray-900"
                         >
-                          Название фильма
+                          {t("addWork:category")}
+                        </label>
+                        <select
+                          name="category"
+                          id="category"
+                          onChange={(ev) => {
+                            setCategory(ev.target.value);
+                          }}
+                          className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        >
+                          <option value="Game">{t("addWork:game")}</option>
+                          <option value="Movie">{t("addWork:movie")}</option>
+                          <option value="Book">{t("addWork:book")}</option>
+                        </select>
+                      </div>
+                      <div className="flex flex-col px-4 py-3 sm:py-4">
+                        <label
+                          htmlFor="workTitle"
+                          className="mb-2 block text-sm text-start font-medium leading-6 text-gray-900"
+                        >
+                          {t("addWork:workTitle")}
                         </label>
                         <input
                           required
-                          id="filmTitle"
-                          name="filmTitle"
+                          id="workTitle"
+                          name="workTitle"
                           type="text"
-                          value={filmTitle}
+                          value={workTitle}
                           className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                          onChange={(event) => setFilmTitle(event.target.value)}
+                          onChange={(event) => setWorkTitle(event.target.value)}
                         />
                       </div>
                       <div className="flex flex-col px-4 py-3 sm:py-4">
@@ -84,7 +110,7 @@ export default function AddFilmModalFormComponent({ isOpen, isActive }) {
                           htmlFor="year"
                           className="mb-2 block text-sm text-start font-medium leading-6 text-gray-900"
                         >
-                          Год выпуска:
+                          {t("addWork:year")}
                         </label>
                         <input
                           required
@@ -98,19 +124,19 @@ export default function AddFilmModalFormComponent({ isOpen, isActive }) {
                       </div>
                       <div className="flex flex-col px-4 py-3 sm:py-4">
                         <label
-                          htmlFor="Director"
+                          htmlFor="author"
                           className="mb-2 block text-sm font-medium text-start leading-6 text-gray-900"
                         >
-                          Режиссер
+                          {t("addWork:author")}
                         </label>
                         <input
                           required
-                          id="director"
-                          name="director"
+                          id="author"
+                          name="author"
                           type="text"
-                          value={director}
+                          value={author}
                           className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                          onChange={(event) => setDirector(event.target.value)}
+                          onChange={(event) => setAuthor(event.target.value)}
                         />
                       </div>
                       <div className="flex mt-5 sm:mt-6  sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
@@ -120,13 +146,13 @@ export default function AddFilmModalFormComponent({ isOpen, isActive }) {
                           onClick={() => isOpen(false)}
                           ref={cancelButtonRef}
                         >
-                          Отмена
+                          {t("addWork:cancelButton")}
                         </button>
                         <button
                           className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-500 text-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
                           type="submit"
                         >
-                          Добавить
+                          {t("addWork:addButton")}
                         </button>
                       </div>
                     </form>

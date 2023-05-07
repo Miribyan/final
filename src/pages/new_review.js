@@ -2,36 +2,60 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import Rating from "@mui/material/Rating";
 import StarIcon from "@mui/icons-material/Star";
+import { PlusIcon } from "@heroicons/react/20/solid";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import AddFilmModalFormComponent from "../components/addFilm";
 import ReactMarkdown from "react-markdown";
 import { useTranslation } from "next-i18next";
-
-export default function NewReview() {
+import { useSession } from "next-auth/react";
+import AddWorkModalFormComponent from "@/components/addWork";
+import prisma from "@/lib/prisma";
+export default function NewReview(props) {
   const [mainTitle, setMainTitle] = useState("");
-  const [filmTitle, setFilmTitle] = useState("");
+  const [workTitle, setWorkTitle] = useState("");
+  const [workId, setWorkId] = useState("");
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
   const [filesUrls, setFilesUrls] = useState([]);
   const [previewFiles, setPreviewFile] = useState([]);
   const [group, setGroup] = useState("");
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const ref = useRef([]);
-
+  const { data: session } = useSession();
+  const userId = session?.user.id;
   const { t } = useTranslation();
   const [tagCloud, setTagCloud] = useState([]);
+  const [works, setWorks] = useState([]);
+
+  const [imageUrl, setImageUrl] = useState("");
+  useEffect(() => {
+    if (props.works) {
+      setWorks([...props.works]);
+    }
+  }, [props.works]);
+  useEffect(() => {
+    const result = works.find((e) => e.title === workTitle);
+    if (result) {
+      setWorkId(result.id);
+    }
+  }, [workTitle]);
+  useEffect(() => {
+    const result = filesUrls.join(", ");
+    if (result) {
+      setImageUrl(result);
+    }
+  }, [filesUrls]);
 
   const updatePreviewFiles = useCallback(
     (files) => {
-      console.log("previewFiles", previewFiles);
+      // console.log("previewFiles", previewFiles);
       setPreviewFile([...previewFiles, ...files]);
     },
     [previewFiles]
   );
 
   useEffect(() => {
-    console.log("useEffect previewFiles", previewFiles);
+    // console.log("useEffect previewFiles", previewFiles);
   }, [previewFiles]);
 
   const postFile = async (file) => {
@@ -57,7 +81,7 @@ export default function NewReview() {
       const res = await postFile(files[i]);
       ref.current = [...ref.current, res];
     }
-    console.log("ref.current", ref.current);
+    // console.log("ref.current", ref.current);
     setFilesUrls([...filesUrls, ...ref.current]);
   };
 
@@ -88,22 +112,41 @@ export default function NewReview() {
     setPreviewFile(previewFiles.filter((x) => x.name !== i));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // const response = await fetch("api/prisma/post", {
-    //   method: "POST",
-    //   body: JSON,
-    // }
-    // );
+    try {
+      const data = {
+        mainTitle,
+        workId,
+        group,
+        reviewText,
+        imageUrl,
+        userId,
+        rating,
+      };
+      const response = await fetch("api/prisma/review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      await isOpen(false);
+      setMainTitle("");
+      setWorkTitle("");
+      setGroup("");
+      setReviewText("");
+      setFilesUrls("");
+      setRating("");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <>
-      {/* <AddFilmModalFormComponent isOpen={setOpen} isActive={open} /> */}
+      <AddWorkModalFormComponent isOpen={setOpen} isActive={open} />
       <div className="border-gray-200 pb-5  shadow-md">
         <h3 className="mx-10 text-xl font-semibold leading-6 text-gray-900">
-          {" "}
+          {userId}
           {t("postCreate:pageName")}
         </h3>
       </div>
@@ -148,20 +191,46 @@ export default function NewReview() {
               </select>
             </div>
             <div className="flex flex-col px-4 py-3 sm:py-4">
-              <label
-                htmlFor="filmTitle"
-                className="mb-2 block text-sm font-medium leading-6 text-gray-900"
-              >
-                {t("postCreate:nameMovie")}
-              </label>
-              <input
-                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                id="filmTitle"
-                value={filmTitle}
-                name="filmTitle"
+              <div className="flex  justify-between">
+                <label
+                  htmlFor="workTitle"
+                  className="mb-2 block text-sm font-medium leading-6 text-gray-900"
+                >
+                  {t("postCreate:nameMovie")}
+                </label>
+
+                <button
+                  type="button"
+                  className="rounded-full bg-blue-500 p-1 px-2 text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                  onClick={() => setOpen(true)}
+                >
+                  <PlusIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </div>
+              <Autocomplete
+                freeSolo
+                className="border-none hover:border-none rounded-md bg-transparent py-1.5 focus:ring-0 active:border-none sm:text-sm sm:leading-6  w-full"
+                id="workTitle"
+                name="workTitle"
+                disableClearable
+                size="small"
+                options={works
+                  .filter((obj) => obj.category === group)
+                  .map((option) => option.title)}
+                value={workTitle}
                 onChange={(event, newValue) => {
-                  setFilmTitle(newValue);
+                  setWorkTitle(newValue);
                 }}
+                renderInput={(params) => (
+                  <TextField
+                    className=" border-none hover:border-none bg-transparent active:border-none py-1.5  sm:text-sm sm:leading-6  w-full"
+                    {...params}
+                    InputProps={{
+                      ...params.InputProps,
+                      type: "search",
+                    }}
+                  />
+                )}
               />
             </div>
 
@@ -330,10 +399,23 @@ export default function NewReview() {
 }
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-export async function getStaticProps({ locale }) {
+
+export async function getServerSideProps({ locale }) {
+  const works = await prisma.work.findMany();
+  const serializedWorks = works.map((work) => ({
+    ...work,
+    createdAt: work.createdAt.toISOString(),
+  }));
+  console.log(serializedWorks);
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "postCreate"])),
+      ...(await serverSideTranslations(locale, [
+        "common",
+        "postCreate",
+        "addWork",
+      ])),
+
+      works: serializedWorks,
     },
   };
 }

@@ -23,16 +23,29 @@ model User {
     Comment       Comment[]
 }
 
+model Work {
+    id        Int      @id @default(autoincrement())
+    year      Int
+    title     String
+    category  String
+    author    String
+    createdAt DateTime @default(now())
+    reviews   Review[]
+    Rating    Rating[]
+}
+
 model Review {
     id         Int      @id @default(autoincrement())
     reviewName String
     category   String
+    workId     Int
     authorId   String
     imageUrl   String
     content    String   @db.Text
     stars      Int
     createdAt  DateTime @default(now())
 
+    work     Work       @relation(fields: [workId], references: [id])
     author   User       @relation(fields: [authorId], references: [id])
     Taggings Taggings[]
     Like     Like[]
@@ -44,11 +57,13 @@ model Review {
 
 model Rating {
     id        Int      @id @default(autoincrement())
+    workId    Int
     userId    String
     reviewId  Int
     stars     Int
     createdAt DateTime @default(now())
 
+    work   Work   @relation(fields: [workId], references: [id])
     user   User   @relation(fields: [userId], references: [id])
     review Review @relation(fields: [reviewId], references: [id])
 }

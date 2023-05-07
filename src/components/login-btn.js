@@ -5,6 +5,7 @@ export default function Login_Component() {
   const { t } = useTranslation();
   const { data: session } = useSession();
   if (session) {
+    // console.log(session)
     return (
       <>
         <button onClick={() => signOut()}>  {t("common:logout")}</button>
