@@ -46,7 +46,7 @@ export default function ReviewComponentFull({
                 const workId = review.workId;
                 const data = { userId, workId, stars };
                 const response = await fetch(
-                    "http://127.0.0.1:3000/api/prisma/rating",
+                    `${process.env.NEXTAUTH_URL}/api/prisma/rating`,
                     {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -68,7 +68,7 @@ export default function ReviewComponentFull({
                     ratingId,
                 };
                 const response = await fetch(
-                    "http://127.0.0.1:3000/api/prisma/rating",
+                    `${process.env.NEXTAUTH_URL}/api/prisma/rating`,
                     {
                         method: "PATCH",
                         headers: { "Content-Type": "application/json" },
@@ -91,7 +91,7 @@ export default function ReviewComponentFull({
                 const reviewId = review.id;
                 const data = { userId, reviewId };
                 const response = await fetch(
-                    "http://127.0.0.1:3000/api/prisma/like",
+                    `${process.env.NEXTAUTH_URL}/api/prisma/like`,
                     {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -108,7 +108,7 @@ export default function ReviewComponentFull({
                 const reviewId = review.id;
                 const data = { userId, reviewId, likeId: currentLike.id };
                 const response = await fetch(
-                    "http://127.0.0.1:3000/api/prisma/like",
+                    `${process.env.NEXTAUTH_URL}/api/prisma/like}`,
                     {
                         method: "PATCH",
                         headers: { "Content-Type": "application/json" },

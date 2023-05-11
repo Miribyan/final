@@ -20,7 +20,7 @@ export default function CommentComponent({ reviewId, comments }) {
             if (commentText.length > 0) {
                 const data = { commentText, userId, reviewId };
                 const response = await fetch(
-                    "http://127.0.0.1:3000/api/prisma/comment",
+                    `${process.env.NEXTAUTH_URL}/api/prisma/comment`,
                     {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -29,7 +29,7 @@ export default function CommentComponent({ reviewId, comments }) {
                 ).then((response) => response.json());
                 setCommentText("");
 
-                console.log(response);
+                
                 setCommentState(response);
             }
         } catch (error) {
@@ -42,7 +42,7 @@ export default function CommentComponent({ reviewId, comments }) {
             try {
                 const data = { commentId, reviewId };
                 const response = await fetch(
-                    "http://127.0.0.1:3000/api/prisma/comment/",
+                    `${process.env.NEXTAUTH_URL}/api/prisma/comment/`,
                     {
                         method: "PATCH",
                         headers: { "Content-Type": "application/json" },

@@ -13,7 +13,7 @@ export default function AddWorkModalFormComponent({ isOpen, isActive }) {
     event.preventDefault();
     try {
       const data = { workTitle, year, author, category };
-      const response = await fetch("http://127.0.0.1:3000/api/prisma/work", {
+      const response = await fetch(`${process.env.NEXTAUTH_URL}/api/prisma/work`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

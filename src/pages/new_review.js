@@ -156,9 +156,9 @@ export default function NewReview(props) {
                 reviewTags,
                 reviewTagsObj,
             };
-            console.log(data);
+            // console.log(data);
             const response = await fetch(
-                "http://127.0.0.1:3000/api/prisma/review",
+                `${process.env.NEXTAUTH_URL}/api/prisma/review`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

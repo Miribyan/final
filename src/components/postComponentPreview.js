@@ -1,7 +1,5 @@
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { useRouter } from "next/router";
-import Rating from "@mui/material/Rating";
-import StarIcon from "@mui/icons-material/Star";
 export default function ReviewComponent({ reviews }) {
     const router = useRouter();
     const defaultProfileImage =

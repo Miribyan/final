@@ -18,7 +18,7 @@ export default async function handler(req, res) {
             tagId: item.id,
             reviewId: +reviewId,
         }));
-        console.log("Result", modifiedResult);
+        // console.log("Result", modifiedResult);
         const createTaggings = await prisma.taggings.createMany({
             data: modifiedResult,
         });

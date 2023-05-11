@@ -8,7 +8,7 @@ export default function Reviews(props) {
     const [reviews, setReviews] = useState(props.review);
     const { t } = useTranslation();
 
-    console.log(reviews);
+    // console.log(reviews);
     return (
         <main className="flex min-h-screen w-full flex-col items-center justify-between">
             <div className="flex justify-between border-gray-200 pb-5 mb-5 w-full shadow-md">
@@ -77,7 +77,7 @@ export async function getServerSideProps({ locale, req, res }) {
             },
         },
     });
-    console.log(review);
+    // console.log(review);
 
     const serializedReview = review.map((review) => ({
         ...review,

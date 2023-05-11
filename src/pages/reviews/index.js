@@ -9,7 +9,7 @@ import { useTranslation } from "next-i18next";
 export default function Reviews(props) {
     const [reviews, setReviews] = useState(props.review);
     const { t } = useTranslation();
-    console.log(reviews);
+    // console.log(reviews);
     return (
         <main className="flex min-h-screen flex-col items-center justify-between p-24">
             <ReviewComponent reviews={reviews} />
@@ -59,7 +59,7 @@ export async function getServerSideProps({ locale }) {
             },
         },
     });
-    console.log(review);
+    // console.log(review);
 
     const serializedReview = review.map((review) => ({
         ...review,
