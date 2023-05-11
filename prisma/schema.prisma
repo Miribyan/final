@@ -50,7 +50,6 @@ model Review {
     Taggings Taggings[]
     Like     Like[]
     Comment  Comment[]
-    Rating   Rating[]
 
     @@index([authorId], name: "review_author_id")
 }
@@ -59,18 +58,16 @@ model Rating {
     id        Int      @id @default(autoincrement())
     workId    Int
     userId    String
-    reviewId  Int
     stars     Int
     createdAt DateTime @default(now())
 
-    work   Work   @relation(fields: [workId], references: [id])
-    user   User   @relation(fields: [userId], references: [id])
-    review Review @relation(fields: [reviewId], references: [id])
+    work Work @relation(fields: [workId], references: [id])
+    user User @relation(fields: [userId], references: [id])
 }
 
 model Tag {
     id        Int        @id @default(autoincrement())
-    title     String
+    title     String     @unique
     createdAt DateTime   @default(now())
     Taggings  Taggings[]
 }

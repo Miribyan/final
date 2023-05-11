@@ -13,7 +13,7 @@ export default function AddWorkModalFormComponent({ isOpen, isActive }) {
     event.preventDefault();
     try {
       const data = { workTitle, year, author, category };
-      const response = await fetch("api/prisma/work", {
+      const response = await fetch("http://127.0.0.1:3000/api/prisma/work", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -149,7 +149,7 @@ export default function AddWorkModalFormComponent({ isOpen, isActive }) {
                           {t("addWork:cancelButton")}
                         </button>
                         <button
-                          className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-500 text-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
+                          className="mt-3 inline-flex w-full justify-center rounded-md bg-blue-500 text-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-blue-400 sm:col-start-1 sm:mt-0"
                           type="submit"
                         >
                           {t("addWork:addButton")}
