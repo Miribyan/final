@@ -90,43 +90,93 @@ function Header() {
 
     return (
         <>
-            <header className="bg-white shadow-md">
+            <header className="bg-white w-screen shadow-md">
                 <nav
                     className="mx-auto w-full py-5 md:px-8"
                     aria-label="Global"
                 >
                     <div className="hidden md:flex md:justify-between md: items-center md:gap-x-12">
-                        <div className="flex w-1/4">
+                        <div className="flex w-1/3 lg:w-1/4">
                             <Link
                                 href="/"
-                                className=" text-md text-gray-900 px-3"
+                                className=" text-xs text-gray-900 px-2 md:text-base md:px-3 "
                             >
                                 {t("common:main")}
                             </Link>
                             <Link
                                 href={`/users/${userId}`}
-                                className="text-md w-1/8 text-gray-900 px-3"
+                                className="text-xs w-1/8 text-gray-900 px-2 md:text-base md:px-3"
                             >
                                 My Page
                             </Link>
                         </div>
-                        <input
+                        <form class="flex w-1/3 lg:w-1/2 items-center">
+                            <label for="simple-search" class="sr-only">
+                                Search
+                            </label>
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg
+                                        aria-hidden="true"
+                                        class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                            clip-rule="evenodd"
+                                        ></path>
+                                    </svg>
+                                </div>
+                                <input
+                                    type="text"
+                                    id="simple-search"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Search"
+                                    required
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
+                                <svg
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                    ></path>
+                                </svg>
+                                <span class="sr-only">Search</span>
+                            </button>
+                        </form>
+
+                        {/* <input
                             type="text"
                             name="name"
                             id="name"
                             className="block w-1/2 rounded-full border-0 px-4 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             placeholder="Search"
-                        />
-                        <div className="flex w-1/4 items-center">
+                        /> */}
+                        <div className="flex w-1/3 lg:w-1/4 items-center">
                             <select
                                 onChange={handleLangChange}
                                 value={currentLang}
-                                className=" block rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                className=" block rounded-md border-0 py-1.5 pl-1 md:pl-2 lg:pl-3 pr-3 md:pr-5 lg:pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             >
                                 <option value="en">English</option>
                                 <option value="ru">Russian</option>
                             </select>
-                            <FormControlLabel
+                            {/* <FormControlLabel
                                 control={
                                     <MaterialUISwitch
                                         sx={{ m: 1 }}
@@ -134,10 +184,10 @@ function Header() {
                                     />
                                 }
                                 className="m-0"
-                            />
+                            /> */}
                             <Link
                                 href="/"
-                                className="text-md justify-self-end text-gray-900"
+                                className="text-md ml-10 text-gray-900"
                             >
                                 <Login_Component />
                             </Link>
@@ -146,7 +196,7 @@ function Header() {
                     <div className="flex md:hidden">
                         <button
                             type="button"
-                            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                            className="ml-3 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                             onClick={() => setMobileMenuOpen(true)}
                         >
                             <span className="sr-only">Open main menu</span>
@@ -166,7 +216,7 @@ function Header() {
                             <div className="flex flex-1">
                                 <button
                                     type="button"
-                                    className="-m-2.5 rounded-md p-2.5 text-gray-700"
+                                    className="rounded-md p-2.5 text-gray-700"
                                     onClick={() => setMobileMenuOpen(false)}
                                 >
                                     <XMarkIcon
@@ -192,7 +242,7 @@ function Header() {
                         </div>
                         <div className="mt-6 space-y-2">
                             <div className="flex justify-between">
-                                <div>
+                                {/* <div>
                                     <FormControlLabel
                                         control={
                                             <MaterialUISwitch
@@ -202,7 +252,7 @@ function Header() {
                                         }
                                         label="shift"
                                     />
-                                </div>
+                                </div> */}
                                 <div>
                                     <select
                                         onChange={handleLangChange}
@@ -215,13 +265,55 @@ function Header() {
                                 </div>
                             </div>
 
-                            <input
-                                type="text"
-                                name="name"
-                                id="name"
-                                className="block w-full rounded-full border-0 px-4 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                placeholder="Search"
-                            />
+                            <form class="flex items-center">
+                                <label for="simple-search" class="sr-only">
+                                    Search
+                                </label>
+                                <div class="relative w-full">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg
+                                            aria-hidden="true"
+                                            class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                            <path
+                                                fill-rule="evenodd"
+                                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                clip-rule="evenodd"
+                                            ></path>
+                                        </svg>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="simple-search"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Search"
+                                        required
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    class="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                >
+                                    <svg
+                                        class="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                        ></path>
+                                    </svg>
+                                    <span class="sr-only">Search</span>
+                                </button>
+                            </form>
 
                             <Link
                                 href="/"
@@ -230,10 +322,10 @@ function Header() {
                                 {t("common:main")}
                             </Link>
                             <Link
-                                href="/newReview"
-                                className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                                href={`/users/${userId}`}
+                                className="text-md w-1/8 text-gray-900 px-3"
                             >
-                                {t("common:newReview")}
+                                My Page
                             </Link>
                         </div>
                     </Dialog.Panel>

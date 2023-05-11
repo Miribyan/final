@@ -185,13 +185,13 @@ export default function NewReview(props) {
         <>
             <AddWorkModalFormComponent isOpen={setOpen} isActive={open} />
             <div className="border-gray-200 pb-5  shadow-md">
-                <h3 className="mx-10 text-xl font-semibold leading-6 text-gray-900">
+                <h3 className="mx-4 md:mx-10 text-xl font-semibold leading-6 text-gray-900">
                     {t("postCreate:pageName")}
                 </h3>
             </div>
 
             <div className=" flex  justify-center overflow-scroll pb-2">
-                <form className="w-3/5 shadow-md" onSubmit={handleSubmit}>
+                <form className="w-full md:w-4/5 lg:w-3/5 shadow-md" onSubmit={handleSubmit}>
                     <div className="flex flex-col divide-y divide-gray-200 border-b-1 shadow-md overflow-hidden rounded-lg rounded-t-sm bg-white ">
                         <div className="flex flex-col px-4 py-3 sm:py-4">
                             <label
@@ -248,11 +248,11 @@ export default function NewReview(props) {
 
                                 <button
                                     type="button"
-                                    className="rounded-full bg-blue-500 p-1 px-2 text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                                    className="flex items-center justify-center rounded-xl bg-blue-500 h-4 w-4 md:h-6 md:w-6 text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
                                     onClick={() => setOpen(true)}
                                 >
                                     <PlusIcon
-                                        className="h-5 w-5"
+                                        className="h-3 w-3 md:h-5 md:w-5"
                                         aria-hidden="true"
                                     />
                                 </button>
@@ -284,7 +284,7 @@ export default function NewReview(props) {
                             />
                         </div>
 
-                        <div className="flex flex-col px-4 py-3 sm:py-4">
+                        <div className="flex flex-col px-2 py-3 sm:py-4">
                             <div className="col-span-full">
                                 <label
                                     htmlFor="cover-photo"
@@ -293,7 +293,7 @@ export default function NewReview(props) {
                                     {t("postCreate:addPoster")}
                                 </label>
                                 <div className=" flex  w-full h-full justify-center items-center bg-white px-2">
-                                    <div className="p-3 w-full h-full flex flex-col justify-center items-center rounded-md">
+                                    <div className="w-full h-full flex flex-col justify-center items-center rounded-md">
                                         <div
                                             {...getRootProps({
                                                 role: "button",
@@ -311,7 +311,7 @@ export default function NewReview(props) {
                                                     {t("postCreate:dropFiles")}
                                                 </p>
                                             ) : (
-                                                <p className=" h-full w-full bg-gray-50  text-sm flex justify-center items-center top-0">
+                                                <p className=" h-full w-full bg-gray-50 text-center text-sm flex justify-center items-center top-0">
                                                     {t("postCreate:dnd")}
                                                 </p>
                                             )}

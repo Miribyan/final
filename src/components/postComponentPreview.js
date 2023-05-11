@@ -9,19 +9,19 @@ export default function ReviewComponent({ reviews }) {
             {reviews.map((review) => (
                 <div
                     key={review.id}
-                    className="bg-white w-2/3 border rounded-md py-5 mb-5 shadow"
+                    className="bg-white w-full border rounded-md py-5 mb-5 shadow sm:w-2/3"
                 >
                     <div className="mx-auto w-full px-6 lg:px-8">
                         <div className="mx-auto">
                             <div className="flex w-full justify-between">
-                                <h2 className="text-2xl w-2/3 font-bold tracking-tight text-gray-900 sm:text-4xl">
+                                <h2 className="text-1xl w-2/3 font-bold tracking-tight text-gray-900 sm:text-4xl">
                                     {review.reviewName}
                                 </h2>
                                 <button
                                     onClick={() => {
                                         router.push(`/reviews/${review.id}`);
                                     }}
-                                    className="inline-flex h-fit w-fit items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                                    className="inline-flex h-fit w-fit items-center py-1.5 px-2 text-xs sm:py-2 sm:px-3 md:py-2.5 md:px-4 text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
                                     type="button"
                                 >
                                     Read full review
