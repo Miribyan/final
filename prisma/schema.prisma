@@ -1,5 +1,6 @@
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -21,6 +22,8 @@ model User {
     Rating        Rating[]
     Like          Like[]
     Comment       Comment[]
+
+    @@fulltext([name])
 }
 
 model Work {
@@ -32,6 +35,8 @@ model Work {
     createdAt DateTime @default(now())
     reviews   Review[]
     Rating    Rating[]
+
+    @@fulltext([title, author])
 }
 
 model Review {
@@ -52,6 +57,7 @@ model Review {
     Comment  Comment[]
 
     @@index([authorId], name: "review_author_id")
+    @@fulltext([content, category, reviewName])
 }
 
 model Rating {
@@ -70,6 +76,7 @@ model Tag {
     title     String     @unique
     createdAt DateTime   @default(now())
     Taggings  Taggings[]
+    @@fulltext([title])
 }
 
 model Taggings {
@@ -101,6 +108,7 @@ model Comment {
 
     review Review @relation(fields: [reviewId], references: [id])
     user   User   @relation(fields: [userId], references: [id])
+    @@fulltext([content])
 }
 
 model Account {

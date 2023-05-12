@@ -1,13 +1,11 @@
 import ReviewComponent from "@/components/postComponentPreview";
 import prisma from "@/lib/prisma";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import TagCloudComponent from "@/components/tagCloudComponent";
 import { useState, useEffect } from "react";
 import { useTranslation } from "next-i18next";
 
 export default function Reviews(props) {
     const [reviews, setReviews] = useState(props.review);
-    const [tags, setTags] = useState(props.tags);
     const [buttonText, setButtonText] = useState("СТАРЫЕ");
     const { t } = useTranslation();
 
@@ -33,15 +31,11 @@ export default function Reviews(props) {
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-between">
-            <TagCloudComponent tags={tags} />
             <div className="bg-white px-6 py-20 sm:py-24 lg:px-8">
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                        WELCOME...
+                        Results ({reviews.length})
                     </h2>
-                    <p className="mt-6 text-lg leading-8 text-gray-600">
-                        ...TO THE PORTAL WITH REVIEWS OF YOUR FAVORITE WORKS
-                    </p>
                 </div>
             </div>
             <button
@@ -58,11 +52,21 @@ export default function Reviews(props) {
     );
 }
 
-export async function getServerSideProps({ locale }) {
-    const review = await prisma.review.findMany({
-        where:{
-            
+export async function getServerSideProps({ locale, query }) {
+    const tagTitle = query.tag;
+    const text = query.text;
+
+    const reviewsByTags = await prisma.review.findMany({
+        where: {
+            Taggings: {
+                some: {
+                    tag: {
+                        title: tagTitle,
+                    },
+                },
+            },
         },
+
         include: {
             author: {
                 select: {
@@ -101,21 +105,16 @@ export async function getServerSideProps({ locale }) {
             },
         },
     });
-    const serializedReview = review.map((review) => ({
+
+    const serializedReview = reviewsByTags.map((review) => ({
         ...review,
         createdAt: review.createdAt.toISOString(),
     }));
 
-    const tags = await prisma.tag.findMany();
-    const serializedTags = tags.map((tag) => ({
-        ...tag,
-        createdAt: tag.createdAt.toISOString(),
-    }));
     return {
         props: {
             ...(await serverSideTranslations(locale, ["common", "main"])),
             review: serializedReview,
-            tags: serializedTags,
         },
     };
 }

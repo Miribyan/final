@@ -158,7 +158,7 @@ export default function NewReview(props) {
             };
             // console.log(data);
             const response = await fetch(
-                `${process.env.NEXTAUTH_URL}/api/prisma/review`,
+                `${process.env.URL}/api/prisma/review`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -178,7 +178,6 @@ export default function NewReview(props) {
         } catch (error) {
             console.log(error);
         }
-
     };
 
     return (
@@ -191,7 +190,10 @@ export default function NewReview(props) {
             </div>
 
             <div className=" flex  justify-center overflow-scroll pb-2">
-                <form className="w-full md:w-4/5 lg:w-3/5 shadow-md" onSubmit={handleSubmit}>
+                <form
+                    className="w-full md:w-4/5 lg:w-3/5 shadow-md"
+                    onSubmit={handleSubmit}
+                >
                     <div className="flex flex-col divide-y divide-gray-200 border-b-1 shadow-md overflow-hidden rounded-lg rounded-t-sm bg-white ">
                         <div className="flex flex-col px-4 py-3 sm:py-4">
                             <label
