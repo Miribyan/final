@@ -20,7 +20,7 @@ export default function CommentComponent({ reviewId, comments }) {
             if (commentText.length > 0) {
                 const data = { commentText, userId, reviewId };
                 const response = await fetch(
-                    `${process.env.URL}/api/prisma/comment`,
+                    `${process.env.NEXT_PUBLIC_URL}/api/prisma/comment`,
                     {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -42,7 +42,7 @@ export default function CommentComponent({ reviewId, comments }) {
             try {
                 const data = { commentId, reviewId };
                 const response = await fetch(
-                    `${process.env.URL}/api/prisma/comment/`,
+                    `${process.env.NEXT_PUBLIC_URL}/api/prisma/comment/`,
                     {
                         method: "PATCH",
                         headers: { "Content-Type": "application/json" },

@@ -55,58 +55,123 @@ export default function Reviews(props) {
 export async function getServerSideProps({ locale, query }) {
     const tagTitle = query.tag;
     const text = query.text;
+    let reviews = null;
 
-    const reviewsByTags = await prisma.review.findMany({
-        where: {
-            Taggings: {
-                some: {
-                    tag: {
-                        title: tagTitle,
+    if (text) {
+        reviews = await prisma.review.findMany({
+            where: {
+                content: {
+                    search: text,
+                },
+                category: {
+                    search: text,
+                },
+                reviewName: {
+                    search: text,
+                },
+            },
+            include: {
+                author: {
+                    select: {
+                        name: true,
                     },
                 },
-            },
-        },
-
-        include: {
-            author: {
-                select: {
-                    name: true,
+                Taggings: {
+                    select: {
+                        tagId: true,
+                        tag: {
+                            select: {
+                                title: true,
+                            },
+                        },
+                    },
                 },
-            },
-            Taggings: {
-                select: {
-                    tagId: true,
-                    tag: {
-                        select: {
-                            title: true,
+                Like: {
+                    select: {
+                        id: true,
+                    },
+                },
+                Comment: {
+                    select: {
+                        id: true,
+                    },
+                },
+                work: {
+                    select: {
+                        title: true,
+                        Rating: {
+                            select: {
+                                stars: true,
+                            },
                         },
                     },
                 },
             },
-            Like: {
-                select: {
-                    id: true,
-                },
-            },
-            Comment: {
-                select: {
-                    id: true,
-                },
-            },
-            work: {
-                select: {
-                    title: true,
-                    Rating: {
-                        select: {
-                            stars: true,
+            // some: {
+            //     Comment: {
+            //         content: {
+            //             search: text,
+            //         },
+            //     },
+            //     work: {
+            //         title: {
+            //             search: text,
+            //         },
+            //     },
+            // },
+        });
+    } else {
+        reviews = await prisma.review.findMany({
+            where: {
+                Taggings: {
+                    some: {
+                        tag: {
+                            title: tagTitle,
                         },
                     },
                 },
             },
-        },
-    });
 
-    const serializedReview = reviewsByTags.map((review) => ({
+            include: {
+                author: {
+                    select: {
+                        name: true,
+                    },
+                },
+                Taggings: {
+                    select: {
+                        tagId: true,
+                        tag: {
+                            select: {
+                                title: true,
+                            },
+                        },
+                    },
+                },
+                Like: {
+                    select: {
+                        id: true,
+                    },
+                },
+                Comment: {
+                    select: {
+                        id: true,
+                    },
+                },
+                work: {
+                    select: {
+                        title: true,
+                        Rating: {
+                            select: {
+                                stars: true,
+                            },
+                        },
+                    },
+                },
+            },
+        });
+    }
+    const serializedReview = reviews.map((review) => ({
         ...review,
         createdAt: review.createdAt.toISOString(),
     }));

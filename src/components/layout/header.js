@@ -5,7 +5,7 @@ import { styled } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import Login_Component from "../login-btn";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 // import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
@@ -77,7 +77,7 @@ function Header() {
     };
     const { data: session } = useSession();
     const userId = session?.user.id;
-
+    const [searchValue, setSearchValue] = useState(router.query.text);
     useEffect(() => {
         setCurrentLang(router.locale);
     }, [router.locale]);
@@ -86,6 +86,10 @@ function Header() {
         const lang = event.target.value;
         changeLang(lang);
     };
+
+    // const handleSubmit = useCallback(() => {
+    //     router.push(`/search?text=${searchValue}`);
+    // }, [searchValue]);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
@@ -110,7 +114,11 @@ function Header() {
                                 My Page
                             </Link>
                         </div>
-                        <form class="flex w-1/3 lg:w-1/2 items-center">
+                        <form
+                            action="/search"
+                            // onSubmit={handleSubmit}
+                            class="flex w-1/3 lg:w-1/2 items-center"
+                        >
                             <label for="simple-search" class="sr-only">
                                 Search
                             </label>
@@ -136,6 +144,11 @@ function Header() {
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Search"
                                     required
+                                    name="text"
+                                    defaultValue={searchValue}
+                                    // onChange={(e) => {
+                                    //     setSearchValue(e.target.value);
+                                    // }}
                                 />
                             </div>
                             <button
