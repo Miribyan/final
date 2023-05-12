@@ -50,8 +50,8 @@ model Review {
     stars      Int
     createdAt  DateTime @default(now())
 
-    work     Work       @relation(fields: [workId], references: [id])
-    author   User       @relation(fields: [authorId], references: [id])
+    work     Work       @relation(fields: [workId], references: [id], onDelete: Cascade)
+    author   User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
     Taggings Taggings[]
     Like     Like[]
     Comment  Comment[]
@@ -67,8 +67,8 @@ model Rating {
     stars     Int
     createdAt DateTime @default(now())
 
-    work Work @relation(fields: [workId], references: [id])
-    user User @relation(fields: [userId], references: [id])
+    work Work @relation(fields: [workId], references: [id], onDelete: Cascade)
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Tag {
@@ -76,6 +76,7 @@ model Tag {
     title     String     @unique
     createdAt DateTime   @default(now())
     Taggings  Taggings[]
+
     @@fulltext([title])
 }
 
@@ -85,8 +86,8 @@ model Taggings {
     reviewId  Int
     createdAt DateTime @default(now())
 
-    tag    Tag    @relation(fields: [tagId], references: [id])
-    review Review @relation(fields: [reviewId], references: [id])
+    tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+    review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 }
 
 model Like {
@@ -95,8 +96,8 @@ model Like {
     userId    String
     createdAt DateTime @default(now())
 
-    review Review @relation(fields: [reviewId], references: [id])
-    user   User   @relation(fields: [userId], references: [id])
+    review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
@@ -106,8 +107,9 @@ model Comment {
     content   String
     createdAt DateTime @default(now())
 
-    review Review @relation(fields: [reviewId], references: [id])
+    review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
     user   User   @relation(fields: [userId], references: [id])
+
     @@fulltext([content])
 }
 

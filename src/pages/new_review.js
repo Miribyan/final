@@ -158,7 +158,7 @@ export default function NewReview(props) {
             };
             // console.log(data);
             const response = await fetch(
-                "https://final-miribyan.vercel.app/api/prisma/review",
+                `${process.env.NEXT_PUBLIC_URL}/api/prisma/review`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

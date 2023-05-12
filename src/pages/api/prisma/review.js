@@ -25,7 +25,7 @@ export default async function handler(req, res) {
                     stars: +rating,
                 },
             });
-            
+
             const creatingTags = await prisma.tag.createMany({
                 data: reviewTagsObj,
                 skipDuplicates: true,
@@ -43,10 +43,28 @@ export default async function handler(req, res) {
             }));
             const createTaggings = await prisma.taggings.createMany({
                 data: modifiedResult,
-            });res.json(result)
+            });
+            res.json(result);
         } catch (error) {
             console.error(error);
             res.status(500).json(error);
+        }
+    } else if (req.method === "PATCH") {
+        try {
+            const { reviewId } = req.body;
+            console.log(reviewId)
+
+            const result = await prisma.review.delete({
+                where: {
+                    id: +reviewId,
+                },
+            });
+            res.status(200).json({ message: "Отзыв успешно удален" });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({
+                message: "Произошла ошибка при удалении отзыва",
+            });
         }
     }
 }

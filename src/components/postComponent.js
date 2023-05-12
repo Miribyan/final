@@ -11,7 +11,6 @@ export default function ReviewComponentFull({
     likes,
     ratings,
 }) {
-    console.log(process.env.NEXT_PUBLIC_URL);
     const [currentRating, setCurrentRating] = useState(undefined);
     const router = useRouter();
     const { data: session } = useSession();
@@ -109,7 +108,7 @@ export default function ReviewComponentFull({
                 const reviewId = review.id;
                 const data = { userId, reviewId, likeId: currentLike.id };
                 const response = await fetch(
-                    `${process.env.NEXT_PUBLIC_URL}/api/prisma/like}`,
+                    `${process.env.NEXT_PUBLIC_URL}/api/prisma/like`,
                     {
                         method: "PATCH",
                         headers: { "Content-Type": "application/json" },
@@ -126,12 +125,45 @@ export default function ReviewComponentFull({
         }
     };
 
+    const deleteClick = async () => {
+        try {
+            const reviewId = review.id;
+            const data = { userId, reviewId };
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_URL}/api/prisma/review`,
+                {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data),
+                }
+            );
+            res.json(response);
+            if (response.status === 200) {
+                router.back();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <>
             <div
                 key={review.id}
                 className="bg-white border rounded-md py-5 mb-5 shadow"
             >
+                {userId === review.authorId ? (
+                    <div className="flex justify-end mr-5">
+                        <button
+                            onClick={() => {
+                                deleteClick();
+                            }}
+                            className="inline-flex h-fit w-fit items-center py-1.5 px-2 text-xs sm:py-2 sm:px-3 md:py-2.5 md:px-4 text-center text-white bg-red-600 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                            type="button"
+                        >
+                            Delete
+                        </button>{" "}
+                    </div>
+                ) : null}
                 <div className="mx-auto max-w-7xl px-6 lg:px-8">
                     <div className="mx-auto max-w-2xl">
                         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">

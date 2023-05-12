@@ -45,6 +45,14 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 export async function getServerSideProps({ locale, req, res }) {
     const session = await getServerSession(req, res, authOptions);
+    if (!session) {
+        return {
+            redirect: {
+                destination: `${process.env.NEXT_PUBLIC_URL}/api/auth/signin`,
+                permanent: false,
+            },
+        };
+    }
     const userId = session.user.id;
     const userName = session.user.name;
 

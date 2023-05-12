@@ -1,1 +1,15 @@
-{"login":"Sign in","logout":"Sign out","main":"Main","newReview":"New review","yourCompany":"Your Company"}
+{
+    "login": "Sign in",
+    "logout": "Sign out",
+    "main": "Main",
+    "myPage": "Моя страница",
+    "newReview": "New review",
+    "yourCompany": "Your Company",
+    "read": " Read full review",
+    "tagCloud": "TAG CLOUD",
+    "addReview":"+ NEW REVIEW",
+    "delete": "Delete",
+    "yourRate": "Set your rate!",
+    "author": "Author"
+  
+  }

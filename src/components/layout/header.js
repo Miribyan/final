@@ -111,7 +111,7 @@ function Header() {
                                 href={`/users/${userId}`}
                                 className="text-xs w-1/8 text-gray-900 px-2 md:text-base md:px-3"
                             >
-                                My Page
+                                {t("common:myPage")}
                             </Link>
                         </div>
                         <form
@@ -336,9 +336,9 @@ function Header() {
                             </Link>
                             <Link
                                 href={`/users/${userId}`}
-                                className="text-md w-1/8 text-gray-900 px-3"
+                                className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                             >
-                                My Page
+                                {t("common:myPage")}
                             </Link>
                         </div>
                     </Dialog.Panel>

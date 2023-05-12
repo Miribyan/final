@@ -1,2 +1,12 @@
-{ "workTitle":"Name of work","year":"Release year","author":"Author","cancelButton":"Cancel","addButton":"Add","pageTitle":"Add new work","category":"Category","movie":"Movie","book":"Book","game":"Game"}
-
+{
+    "workTitle": "Name of work",
+    "year": "Release year",
+    "author": "Author",
+    "cancelButton": "Cancel",
+    "addButton": "Add",
+    "pageTitle": "Add new work",
+    "category": "Category",
+    "movie": "Movie",
+    "book": "Book",
+    "game": "Game"
+  }
