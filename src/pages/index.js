@@ -48,7 +48,7 @@ export default function Reviews(props) {
                 onClick={() => {
                     handleClick();
                 }}
-                className="inline-flex self-end mr-10 h-fit mb-4 w-fit items-center py-1.5 px-2 text-xs sm:py-2 sm:px-3 md:py-2.5 md:px-4 text-xs text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                className="inline-flex self-end mr-10 h-fit mb-4 w-fit items-center py-1.5 px-2 text-xs sm:py-2 sm:px-3 md:py-2.5 md:px-4 text-xs text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
                 type="button"
             >
                 {buttonText}

@@ -21,7 +21,7 @@ export default function Example() {
                 </h3>
                 <Link
                     href={`/new_review`}
-                    className="text-md text-gray-900  mx-10 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                    className="text-md text-gray-900  mx-10 inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-gray-700 rounded-lg focus:ring-4 focus:ring-primary-200 hover:bg-primary-800"
                 >
                     + NEW REVIEW
                 </Link>

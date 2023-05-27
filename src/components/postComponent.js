@@ -157,7 +157,7 @@ export default function ReviewComponentFull({
                             onClick={() => {
                                 deleteClick();
                             }}
-                            className="inline-flex h-fit w-fit items-center py-1.5 px-2 text-xs sm:py-2 sm:px-3 md:py-2.5 md:px-4 text-center text-white bg-red-600 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
+                            className="inline-flex h-fit w-fit items-center py-1.5 px-2 text-xs sm:py-2 sm:px-3 md:py-2.5 md:px-4 text-center text-white bg-red-600 rounded-lg focus:ring-4 focus:ring-primary-200  hover:bg-primary-800"
                             type="button"
                         >
                             Delete
